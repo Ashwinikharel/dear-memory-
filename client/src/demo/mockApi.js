@@ -55,21 +55,6 @@ const fail = (status, message) => { throw new MockError(status, message); };
 
 const blobFromCanvas = (c, type = 'image/jpeg') => new Promise((r) => c.toBlob(r, type, 0.85));
 
-function watermark(ctx, w, h, text) {
-  const fs = Math.max(14, Math.round(Math.max(w, h) / 32));
-  ctx.save();
-  ctx.font = `700 ${fs}px sans-serif`;
-  ctx.fillStyle = 'rgba(255,255,255,0.22)';
-  ctx.translate(w / 2, h / 2);
-  ctx.rotate(-Math.PI / 6);
-  for (let y = -h; y < h; y += fs * 5) for (let x = -w; x < w; x += fs * (text.length * 0.65 + 4)) ctx.fillText(text, x, y);
-  ctx.restore();
-  ctx.font = `700 ${Math.round(fs * 1.1)}px sans-serif`;
-  ctx.textAlign = 'right';
-  ctx.fillStyle = 'rgba(255,255,255,0.85)';
-  ctx.fillText(text, w - fs, h - fs);
-}
-
 async function samplePhoto(photo) {
   const team = SEED_TEAMS.find((t) => photo.id.startsWith(`sample-${t.id}`));
   const i = Number(photo.id.split('-').pop());
@@ -92,7 +77,6 @@ async function samplePhoto(photo) {
   ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.fillRect(0, h - 90, w, 90);
   ctx.fillStyle = '#fff'; ctx.font = '600 34px sans-serif'; ctx.textAlign = 'left';
   ctx.fillText(`Sample photo ${i + 1} · ${team?.name || ''}`, 30, h - 35);
-  watermark(ctx, w, h, 'Dear Memory · Demo');
   return blobFromCanvas(c);
 }
 
@@ -101,7 +85,7 @@ async function photoBlob(photo) {
   return samplePhoto(photo);
 }
 
-/** Shrinks + watermarks an uploaded photo so it fits in browser storage. */
+/** Shrinks an uploaded photo so it fits in browser storage. */
 async function prepareUpload(file) {
   const bmp = await createImageBitmap(file);
   const scale = Math.min(1, 1000 / Math.max(bmp.width, bmp.height));
@@ -109,7 +93,6 @@ async function prepareUpload(file) {
   const c = Object.assign(document.createElement('canvas'), { width: w, height: h });
   const ctx = c.getContext('2d');
   ctx.drawImage(bmp, 0, 0, w, h);
-  watermark(ctx, w, h, 'Dear Memory · Demo');
   bmp.close?.();
   return { dataUrl: c.toDataURL('image/jpeg', 0.75), width: w, height: h };
 }
