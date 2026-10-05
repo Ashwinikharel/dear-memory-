@@ -1,0 +1,59 @@
+# Render.com blueprint: New + → Blueprint → pick this repository.
+# Values marked "sync: false" are asked for on the Render screen (keep them secret).
+services:
+  - type: web
+    name: dear-memory
+    runtime: docker
+    plan: starter            # a paid plan is needed for the persistent disk (database)
+    region: singapore        # closest Render region to Nepal
+    healthCheckPath: /api/health
+    disk:
+      name: dear-memory-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_PATH
+        value: /data/dearmemory.db
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ADMIN_NAME
+        value: Admin
+      - key: AWS_MOCK
+        value: "0"
+      - key: AWS_REGION
+        value: ap-south-1
+      - key: S3_BUCKET
+        sync: false
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: REKOGNITION_COLLECTION_PREFIX
+        value: dearmemory-
+      - key: FACE_MATCH_THRESHOLD
+        value: "95"
+      - key: LIVENESS_MODE
+        value: basic          # change to "aws" after setting up Cognito (see GO-LIVE.md)
+      - key: LIVENESS_MIN_CONFIDENCE
+        value: "90"
+      - key: GUEST_SESSION_MINUTES
+        value: "30"
+      - key: RETENTION_DAYS
+        value: "30"
+      - key: WATERMARK_TEXT
+        value: Dear Memory
+      # Optional: only for LIVENESS_MODE=aws
+      - key: VITE_AWS_REGION
+        value: ap-south-1
+      - key: VITE_COGNITO_IDENTITY_POOL_ID
+        sync: false
+      # Optional: set to your own domain (e.g. https://photos.yourname.com) once you add one.
+      # Leave empty to use the automatic https://<name>.onrender.com address.
+      - key: PUBLIC_APP_URL
+        sync: false
