@@ -1,0 +1,32 @@
+{
+  "name": "dear-memory-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Dear Memory API - secure, view-only event photo delivery",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-rekognition": "^3.650.0",
+    "@aws-sdk/client-s3": "^3.650.0",
+    "@tensorflow/tfjs": "^4.22.0",
+    "@tensorflow/tfjs-backend-wasm": "^4.22.0",
+    "@vladmandic/face-api": "^1.7.15",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "express-rate-limit": "^7.4.0",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.0",
+    "qrcode": "^1.5.4",
+    "sharp": "^0.33.5"
+  }
+}

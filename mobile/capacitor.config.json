@@ -1,0 +1,16 @@
+{
+  "appId": "com.dearmemory.app",
+  "appName": "Dear Memory",
+  "webDir": "www",
+  "server": {
+    "url": "https://YOUR-APP.onrender.com",
+    "cleartext": false,
+    "allowNavigation": ["YOUR-APP.onrender.com"]
+  },
+  "android": {
+    "allowMixedContent": false
+  },
+  "ios": {
+    "contentInset": "always"
+  }
+}
